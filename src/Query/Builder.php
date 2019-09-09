@@ -86,8 +86,8 @@ class Builder extends \Illuminate\Database\Query\Builder
             $this->offset . ":".
             json_encode($this->wheres).":".
             json_encode($this->orders).":".
-            json_encode($this->bindings);
-        json_encode($this->columns);
+            json_encode($this->bindings).":".
+            json_encode($this->columns);
 
         if($this->cache_hashing_enabled)
             $this->cache_query_key = md5($this->cache_query_key);
