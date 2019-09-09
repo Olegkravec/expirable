@@ -2,6 +2,7 @@
 
 namespace OlegKravec\Expirable\Query;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redis;
 
 class Builder extends \Illuminate\Database\Query\Builder
@@ -81,9 +82,12 @@ class Builder extends \Illuminate\Database\Query\Builder
     private function init(){
         $this->cache_query_key = $this->from.":".
             $this->cache_prefix.":".
+            $this->limit . ":".
+            $this->offset . ":".
             json_encode($this->wheres).":".
             json_encode($this->orders).":".
             json_encode($this->bindings);
+        json_encode($this->columns);
 
         if($this->cache_hashing_enabled)
             $this->cache_query_key = md5($this->cache_query_key);
