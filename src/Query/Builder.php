@@ -8,8 +8,10 @@ class Builder extends \Illuminate\Database\Query\Builder
 {
     protected $cache_enabled = true;
     protected $cache_reset_ttl = false;
+    protected $cache_hashing_enabled = false;
     protected $cache_expire_in = 300;
     protected $cache_prefix = "Models";
+    private $cache_lib_prefix = "expirable:";
     protected $cache_query_key = "";
 
     public function get($columns = ['*']){
@@ -55,6 +57,9 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function prefix(string $cachePrefix){
         $this->cache_prefix = $cachePrefix;
     }
+    public function hashExpirable(){
+        $this->cache_hashing_enabled = true;
+    }
 
     public function resetExpire(int $seconds){
         $this->cache_reset_ttl = true;
@@ -73,12 +78,16 @@ class Builder extends \Illuminate\Database\Query\Builder
         $this->cache_enabled = true;
     }
 
-
     private function init(){
-        $this->cache_query_key = "expirable:".$this->from.":".
+        $this->cache_query_key = $this->from.":".
             $this->cache_prefix.":".
             json_encode($this->wheres).":".
             json_encode($this->orders).":".
             json_encode($this->bindings);
+
+        if($this->cache_hashing_enabled)
+            $this->cache_query_key = md5($this->cache_query_key);
+
+        $this->cache_query_key = $this->cache_lib_prefix . $this->cache_query_key;
     }
 }

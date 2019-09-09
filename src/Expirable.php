@@ -21,6 +21,9 @@ trait Expirable
         if (isset($this->_expirable_prefix)) {
             $builder->prefix($this->_expirable_prefix);
         }
+        if (isset($this->_expirable_cache_hashing_enabled)) {
+            $builder->hashExpirable();
+        }
 
         return $builder;
     }
