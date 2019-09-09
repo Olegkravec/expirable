@@ -12,22 +12,16 @@ trait Expirable
      */
     protected function newBaseQueryBuilder()
     {
-        \Debugbar::info("Connected!");
         $conn = $this->getConnection();
         $grammar = $conn->getQueryGrammar();
         $builder = new Builder($conn, $grammar, $conn->getPostProcessor());
-        if (isset($this->rememberFor)) {
-            $builder->remember($this->rememberFor);
+        if (isset($this->_expirable_ttl)) {
+            $builder->expire($this->_expirable_ttl);
         }
-        if (isset($this->rememberCacheTag)) {
-            $builder->cacheTags($this->rememberCacheTag);
+        if (isset($this->_expirable_prefix)) {
+            $builder->prefix($this->_expirable_prefix);
         }
-        if (isset($this->rememberCachePrefix)) {
-            $builder->prefix($this->rememberCachePrefix);
-        }
-        if (isset($this->rememberCacheDriver)) {
-            $builder->cacheDriver($this->rememberCacheDriver);
-        }
+
         return $builder;
     }
 }
