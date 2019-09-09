@@ -38,7 +38,7 @@ class YourModel extends Model
 <?php
 class YourModel extends Model
 {
-    use Rememberable;
+    use Expirable;
     
     public $_expirable_ttl = 100; 
     public $_expirable_prefix = "MyModelPrefix";
