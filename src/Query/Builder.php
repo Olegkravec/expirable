@@ -60,6 +60,7 @@ class Builder extends \Illuminate\Database\Query\Builder
         $this->cache_reset_ttl = true;
         $this->cache_expire_in = $seconds;
     }
+
     public function expire(int $seconds){
         $this->cache_expire_in = $seconds;
     }
