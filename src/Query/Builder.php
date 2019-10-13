@@ -58,6 +58,10 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function prefix(string $cachePrefix){
         $this->cache_prefix = $cachePrefix;
     }
+
+    public function dumpQuery(){
+    	dd($this);
+    }
     public function hashExpirable(){
         $this->cache_hashing_enabled = true;
     }
@@ -86,6 +90,7 @@ class Builder extends \Illuminate\Database\Query\Builder
             $this->offset . ":".
             json_encode($this->wheres).":".
             json_encode($this->orders).":".
+            json_encode($this->distinct).":".
             json_encode($this->bindings).":".
             json_encode($this->columns);
 
